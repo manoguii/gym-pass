@@ -12,10 +12,10 @@ jobs:
         image: bitnami/postgresql:latest
         ports:
           - 5432:5432
-        environment:
-          - POSTGRESQL_USERNAME=docker
-          - POSTGRESQL_PASSWORD=docker
-          - POSTGRESQL_DATABASE=gym-pass-db
+        env:
+          POSTGRESQL_USERNAME: docker
+          POSTGRESQL_PASSWORD: docker
+          POSTGRESQL_DATABASE: gym-pass-db
 
     steps:
       - uses: actions/checkout@v3
