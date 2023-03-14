@@ -1,0 +1,33 @@
+name: Run e2e tests
+
+on: [push]
+
+jobs:
+  run-e2e-tests:
+    name: Run e2e tests
+    runs-on: ubuntu-latest
+
+    services:
+      gym-pass:
+        image: bitnami/postgresql:latest
+        ports:
+          - 5432:5432
+        environment:
+          - POSTGRESQL_USERNAME=docker
+          - POSTGRESQL_PASSWORD=docker
+          - POSTGRESQL_DATABASE=gym-pass-db
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run test:e2e
+        env:
+          JWT_SECRET: testing-secret
+          DATABASE_URL: "postgresql://docker:docker@localhost:5432/gym-pass-db?schema=public"
