@@ -33,7 +33,7 @@ export async function authenticate(
       },
     )
 
-    const refresh_token = await reply.jwtSign(
+    const refreshToken = await reply.jwtSign(
       {
         role: user.role,
       },
@@ -46,7 +46,7 @@ export async function authenticate(
     )
 
     return reply
-      .setCookie('refresh_token', refresh_token, {
+      .setCookie('refreshToken', refreshToken, {
         path: '/',
         secure: true,
         sameSite: true,
