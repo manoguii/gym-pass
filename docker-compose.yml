@@ -1,11 +1,23 @@
-version: '3'
+version: '3.8'
 
 services:
-  gym-pass:
-    image: bitnami/postgresql:latest
+  db:
+    image: bitnami/postgresql:16.3.0
+    container_name: gym-pass-db
     ports:
       - 5432:5432
     environment:
       - POSTGRESQL_USERNAME=docker
       - POSTGRESQL_PASSWORD=docker
       - POSTGRESQL_DATABASE=gym-pass-db
+  api:
+    build:
+      context: .
+    container_name: gym-pass-api
+    ports:
+      - 3333:3333
+    environment:
+      - JWT_SECRET=my-secret-key
+      - DATABASE_URL=postgresql://docker:docker@gym-pass-db:5432/gym-pass-db?schema=public
+    depends_on:
+      - db
